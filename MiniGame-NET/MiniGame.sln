@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniGame", "MiniGame\MiniGame.csproj", "{C3D650CE-B717-46E5-ACE6-6844CC3927AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL2-CS.Core", "SDL2-CS\SDL2-CS.Core.csproj", "{3BE65EA5-4D0E-4AF4-9B7E-60E895BD35F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniGameEngine", "MiniGameEngine\MiniGameEngine.csproj", "{69EBB8A3-A849-4D79-BDD3-17779C772C9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3D650CE-B717-46E5-ACE6-6844CC3927AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D650CE-B717-46E5-ACE6-6844CC3927AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D650CE-B717-46E5-ACE6-6844CC3927AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D650CE-B717-46E5-ACE6-6844CC3927AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BE65EA5-4D0E-4AF4-9B7E-60E895BD35F7}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3BE65EA5-4D0E-4AF4-9B7E-60E895BD35F7}.Debug|Any CPU.Build.0 = Debug|x64
+		{3BE65EA5-4D0E-4AF4-9B7E-60E895BD35F7}.Release|Any CPU.ActiveCfg = Release|x64
+		{3BE65EA5-4D0E-4AF4-9B7E-60E895BD35F7}.Release|Any CPU.Build.0 = Release|x64
+		{69EBB8A3-A849-4D79-BDD3-17779C772C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EBB8A3-A849-4D79-BDD3-17779C772C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EBB8A3-A849-4D79-BDD3-17779C772C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EBB8A3-A849-4D79-BDD3-17779C772C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F61B4EE8-A3BF-4532-AF49-0171410C03CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F61B4EE8-A3BF-4532-AF49-0171410C03CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F61B4EE8-A3BF-4532-AF49-0171410C03CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F61B4EE8-A3BF-4532-AF49-0171410C03CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
