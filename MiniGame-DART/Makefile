@@ -3,7 +3,7 @@ all: build
 .PHONY: build
 
 build:
-	dart compile js -O0 -opublic/js/main.js src/main.dart
+	dart compile js -O2 -opublic/js/main.js src/web/main.dart
 
 run:
 	@tools/watch.sh
