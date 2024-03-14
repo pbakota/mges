@@ -1,5 +1,22 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 library engine;
 
+import 'dart:async';
 import 'dart:html';
 import 'sound.dart';
 
@@ -135,12 +152,12 @@ final class EngineOptions {
 abstract class Engine {
   final Renderer _renderer;
   final Loader _loader;
+  final EngineOptions _opts;
   bool _paused = false;
   bool _activated = false;
-  num _now = 0;
-  num _delta = 0;
-  num _then = 0;
-  final EngineOptions _opts;
+  double _now = 0;
+  double _delta = 0;
+  double _then = 0;
   bool _isFullScreen = false;
   bool _wasFullScreen = false;
   int? _frameId;
@@ -151,7 +168,7 @@ abstract class Engine {
         _renderer = renderer ?? Renderer(),
         _loader = loader ?? Loader() {
     /* fullscreen detector see: https://stackoverflow.com/a/64316621 */
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       _isFullScreen =
           document.getElementById('detector')!.getBoundingClientRect().top > 0;
       if (_isFullScreen) {
@@ -182,7 +199,7 @@ abstract class Engine {
   void update(double dt);
   void draw(CanvasRenderingContext2D ctx);
 
-  void updateDelta(num timestamp) {
+  void updateDelta(double timestamp) {
     _now = timestamp;
     _delta = (_now - _then) / 1000;
     if (_delta > 1.0) {
@@ -198,9 +215,9 @@ abstract class Engine {
 
   void loop(num timestamp) {
     _frameId = window.requestAnimationFrame(loop);
-    updateDelta(timestamp);
+    updateDelta(timestamp == 0 ? window.performance.now() : timestamp.toDouble());
 
-    if (_gameLoaded) {
+    if (!_gameLoaded) {
       _gameLoaded = _loader.progress() == 1;
       if (_gameLoaded) {
         ready();
@@ -208,15 +225,18 @@ abstract class Engine {
       return;
     }
 
-    update(_delta.toDouble());
-    _renderer.clear();
-    draw(_renderer.ctx);
-    _renderer.flip();
+    if(!_paused) {
+      update(_delta.toDouble());
+      _renderer.clear();
+      draw(_renderer.ctx);
+      _renderer.flip();
+    }
   }
 
   void run() {
     if (_activated) return;
     _renderer.display.addEventListener('click', (e) {
+      if(_activated) return;
       e.preventDefault();
       _activated = true;
       init();
@@ -236,7 +256,6 @@ abstract class Engine {
   void stop() {
     if (!_opts.allowPause) return;
 
-    _activated = false;
     _paused = true;
 
     window.cancelAnimationFrame(_frameId!);
@@ -248,7 +267,6 @@ abstract class Engine {
 
     if (!_paused) return;
     _paused = false;
-    _activated = true;
     resume();
     loop(0);
   }
@@ -276,12 +294,12 @@ class Input {
   }
 
   InputKey _getKey(String keyCode) =>
-      InputKey.values.singleWhere((element) => element == keyCode,
+      InputKey.values.firstWhere((element) => element.value == keyCode,
           orElse: () => InputKey.NO_KEY);
 
   bool isDown(InputKey keyCode) {
     _lastKey = keyCode;
-    return _keys['k${keyCode.value}'] == false;
+    return _keys['k${keyCode.value}'] == true;
   }
 
   bool isUp(InputKey keyCode) {
@@ -370,9 +388,7 @@ class Rect {
 class Vector2 {
   num x;
   num y;
-  Vector2(num x, num y)
-      : x = x,
-        y = y;
+  Vector2(this.x, this.y);
 }
 
 final num STANDARD_GRAVITY = 9.80665;
@@ -397,12 +413,8 @@ class ImageSlice {
   int w;
   int h;
   final ImageElement _img;
-  ImageSlice(ImageElement img, int x, int y, int w, int h)
-      : x = x,
-        y = y,
-        w = w,
-        h = h,
-        _img = img;
+  ImageSlice(ImageElement img, this.x, this.y, this.w, this.h)
+      : _img = img;
 
   void draw(CanvasRenderingContext2D ctx, num x, num y,
       {ImageSliceDrawOptions? options}) {
@@ -428,9 +440,13 @@ class ImageSlice {
   }
 }
 
+extension E on String {
+  String lastChars(int n) => substring(length - n);
+}
+
 final class Util {
   static String formatNumber(int number, int places, [String fill = ' ']) =>
-      ((fill * places) + number.toString()).substring(-places);
+      ((fill * places) + number.toString()).lastChars(places);
 }
 
 /// Generate and cache image mostly for background

@@ -1,3 +1,19 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// ignore_for_file: constant_identifier_names
+
 import 'dart:html';
 
 import 'game.dart';
@@ -10,7 +26,7 @@ import 'scene.dart';
 
 const String FOREST_BASE_COLOR = '#0c1122';
 
-class TitleScene implements BaseScene {
+class TitleScene extends BaseScene {
   late ImageSlice _title;
   late ImageSlice _forest;
   late BitmapText _text;
@@ -22,18 +38,18 @@ class TitleScene implements BaseScene {
 
   late ImageCache _backgroundCache;
 
-  TitleScene(Game game) {
+  TitleScene(Game game):super(game) {
     _title = ImageSlice(
-        this.game.getAsset<ImageElement>('titleBitmap'), 0, 0, 640, 480);
+        game.getAsset<ImageElement>('titleBitmap'), 0, 0, 640, 480);
     _forest = ImageSlice(
-        this.game.getAsset<ImageElement>('forest'), 0, 0, 640, 312);
-    _text = BitmapText(this.game.getAsset<ImageElement>('bitmapFont'));
+        game.getAsset<ImageElement>('forest'), 0, 0, 640, 312);
+    _text = BitmapText(game.getAsset<ImageElement>('bitmapFont'));
 
     _mobs = [
-      MobBee(this.game, false, Vector2(80, 140), 0),
-      MobBlue(this.game, false, Vector2(80, 180), 0),
-      MobSniky(this.game, false, Vector2(80, 220), 0),
-      MobFoxy(this.game, false, Vector2(80, 260), 0),
+      MobBee(game, false, Vector2(80, 140), 0),
+      MobBlue(game, false, Vector2(80, 180), 0),
+      MobSniky(game, false, Vector2(80, 220), 0),
+      MobFoxy(game, false, Vector2(80, 260), 0),
     ];
 
     _bomb = Bomb(game, Vector2(80, 300));
@@ -104,7 +120,4 @@ class TitleScene implements BaseScene {
       game.changeScene(GameScene.GAME_SCENE_ACTION);
     }
   }
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

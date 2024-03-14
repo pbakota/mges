@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import 'dart:html';
 
 import 'actor.dart';
@@ -7,7 +21,7 @@ import 'lib/sprite.dart';
 
 abstract class Mob extends Actor {
   final List<ImageSlice> _frames;
-  late bool _active;
+  late bool active;
   late final num _speed;
   late final int _points;
   late num _hp;
@@ -16,14 +30,11 @@ abstract class Mob extends Actor {
 
   Mob(super.position, this._frames, super.flipped, this._hp, this._speed,
       this._points) {
-    _active = true;
+    active = true;
     velocity = Vector2(flipped ? -_speed : _speed, 0);
   }
 
   int get points => _points;
-
-  bool get active => _active;
-  set active(bool val) => _active = val;
 
   @override
   void update(double dt) {
@@ -50,7 +61,7 @@ abstract class Mob extends Actor {
     }
 
     if (position.x < -32.0 || position.x >= 640) {
-      _active = false;
+      active = false;
     }
   }
 
@@ -79,10 +90,8 @@ class MobBee extends Mob {
       : super(
             flipped,
             [
-              ImageSlice(
-                  game.getAsset<ImageElement>('bee1a'), 0, 0, 16, 16),
-              ImageSlice(
-                  game.getAsset<ImageElement>('bee2a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('bee1a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('bee2a'), 0, 0, 16, 16),
             ],
             position,
             2,
@@ -98,10 +107,8 @@ class MobBlue extends Mob {
       : super(
             flipped,
             [
-              ImageSlice(
-                  game.getAsset<ImageElement>('blue1a'), 0, 0, 16, 16),
-              ImageSlice(
-                  game.getAsset<ImageElement>('blue2a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('blue1a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('blue2a'), 0, 0, 16, 16),
             ],
             position,
             3,
@@ -117,16 +124,14 @@ class MobFoxy extends Mob {
       : super(
             flipped,
             [
-              ImageSlice(
-                  game.getAsset<ImageElement>('foxy1a'), 0, 0, 16, 16),
-              ImageSlice(
-                  game.getAsset<ImageElement>('foxy2a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('foxy1a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('foxy2a'), 0, 0, 16, 16),
             ],
             position,
             2,
             speed,
             100);
-  
+
   @override
   Rect get hitbox => Rect(position.x, position.y + 12, 26, 20);
 }
@@ -136,16 +141,14 @@ class MobSniky extends Mob {
       : super(
             flipped,
             [
-              ImageSlice(
-                  game.getAsset<ImageElement>('sniky1a'), 0, 0, 16, 16),
-              ImageSlice(
-                  game.getAsset<ImageElement>('sniky2a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('sniky1a'), 0, 0, 16, 16),
+              ImageSlice(game.getAsset<ImageElement>('sniky2a'), 0, 0, 16, 16),
             ],
             position,
             2,
             speed,
             200);
-  
+
   @override
   Rect get hitbox => Rect(position.x, position.y + 17, 32, 15);
 }

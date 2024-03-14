@@ -1,25 +1,43 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// ignore_for_file: constant_identifier_names
 
 import 'dart:html';
 
 import 'engine.dart';
 
 const GLYPH_SCALE = 2.0;
+
 final class DrawTextOptions {
   bool shadow;
   String shadowColor;
   num scale;
   DrawTextOptions({bool? shadow, String? shadowColor, num? scale})
-    : shadow = shadow ?? false, shadowColor = shadowColor ?? '#00000000', scale = scale ?? GLYPH_SCALE;
+      : shadow = shadow ?? false,
+        shadowColor = shadowColor ?? '#00000000',
+        scale = scale ?? GLYPH_SCALE;
 }
 
 class BitmapText {
-  final Map<String, ImageSlice> _glyphs = <String, ImageSlice>{};
+  final Map<String, ImageSlice> _glyphs = {};
   late CanvasElement _buffer;
   late CanvasRenderingContext2D _bufferCtx;
 
   BitmapText(ImageElement image) {
     _buffer = document.createElement('canvas') as CanvasElement;
-    _buffer.width = 640+2;
+    _buffer.width = 640 + 2;
     _buffer.height = (GLYPH_SCALE * 8 + 2 * GLYPH_SCALE).toInt();
     _bufferCtx = _buffer.context2D;
     _bufferCtx.imageSmoothingEnabled = false;
@@ -116,17 +134,20 @@ class BitmapText {
     _glyphs['z'] = ImageSlice(image, 25 * 8, 16, 8, 8);
   }
 
-  void draw(CanvasRenderingContext2D ctx, int x, int y, String color, String text, [DrawTextOptions? options])
-  {
+  void draw(
+      CanvasRenderingContext2D ctx, int x, int y, String color, String text,
+      [DrawTextOptions? options]) {
     final opts = options ?? DrawTextOptions();
 
     _bufferCtx.save();
-    _bufferCtx.clearRect(x, y, _buffer.width!, _buffer.height!);
+    _bufferCtx.clearRect(0, 0, _buffer.width!, _buffer.height!);
 
-    var xx = 0; var yy = 0;
-    for(var c = 0; c<text.length;++c) {
-      _glyphs[text[c]]?.draw(_bufferCtx, xx, yy, options: ImageSliceDrawOptions(scale: opts.scale));
-      xx += (8*opts.scale).toInt();
+    var xx = 0;
+    var yy = 0;
+    for (var c = 0; c < text.length; ++c) {
+      _glyphs[text[c]]?.draw(_bufferCtx, xx, yy,
+          options: ImageSliceDrawOptions(scale: opts.scale));
+      xx += (8 * opts.scale).toInt();
     }
 
     // coloring
@@ -135,7 +156,7 @@ class BitmapText {
     _bufferCtx.fillRect(0, 0, text.length * 8 * opts.scale, 8 * opts.scale);
     _bufferCtx.restore();
 
-    if(opts.shadow) {
+    if (opts.shadow) {
       // add shadow
       ctx.save();
       ctx.shadowOffsetX = 1;

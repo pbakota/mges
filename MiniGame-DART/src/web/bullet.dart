@@ -1,19 +1,27 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import 'actor.dart';
 import 'lib/engine.dart';
 
 abstract class Bullet extends Actor {
-  late bool _active;
-
-  late final ImageSlice _image;
+  bool active = true;
+  final ImageSlice _image;
 
   Bullet(ImageSlice image, Vector2 position, Vector2 velocity)
       : _image = image,
-        super(false, position, velocity) {
-    _active = true;
-  }
-
-  bool get active => _active;
-  set active(bool val) => _active = val;
+        super(false, position, velocity);
 
   ImageSlice get image => _image;
 }

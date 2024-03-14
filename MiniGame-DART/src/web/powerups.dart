@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import 'dart:html';
 
 import 'actor.dart';
@@ -8,7 +22,7 @@ import 'lib/sprite.dart';
 class Powerup extends Actor {
   final ImageSlice _image;
   final int _points;
-  bool _active = false;
+  bool active = false;
   num _alpha = 100;
   num _waitTimer = 0;
 
@@ -18,9 +32,6 @@ class Powerup extends Actor {
         super(false, position, velocity);
 
   int get points => _points;
-
-  set active(bool val) => _active = val;
-  bool get active => _active;
 
   @override
   void update(double dt) {
@@ -33,7 +44,7 @@ class Powerup extends Actor {
       if (_waitTimer > 3.0) {
         if (_alpha < 0.1) {
           _alpha = 0;
-          _active = false;
+          active = false;
         } else {
           _alpha -= 0.1;
         }
@@ -52,9 +63,9 @@ class Powerup extends Actor {
 
   @override
   bool hit(Actor opponent) {
-    if (!_active) return false;
+    if (!active) return false;
     if (Drawable.aabb(hitbox, opponent.hitbox)) {
-      _active = false;
+      active = false;
       return true;
     }
     return false;
@@ -65,7 +76,7 @@ class Powerup extends Actor {
     velocity.y = 50.0;
     _waitTimer = 0;
     _alpha = 1.0;
-    _active = true;
+    active = true;
   }
 }
 

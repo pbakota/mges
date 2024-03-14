@@ -1,4 +1,21 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// ignore_for_file: constant_identifier_names
+
 import 'dart:html';
+import 'action.dart';
 import 'lib/engine.dart';
 import 'lib/sound.dart';
 import 'scene.dart';
@@ -11,7 +28,7 @@ final Vector2 displaySize = Vector2(640, 480);
 
 class Game extends Engine {
   final Input _input;
-  num _fps;
+  double _fps;
   late Music _music;
   GameScene _currentScene = GameScene.GAME_SCENE_TITLE;
   BaseScene? _activeScene;
@@ -19,9 +36,9 @@ class Game extends Engine {
   Game()
       : _fps = 0,
         _input = Input(),
-        super(EngineOptions(allowPause: false)) {
-    renderer
-        .options(displaySize.x.toInt(), displaySize.y.toInt(), displayScale);
+        super(EngineOptions(allowPause: true)) {
+    renderer.options(
+        displaySize.x.toInt(), displaySize.y.toInt(), displayScale);
   }
 
   @override
@@ -33,8 +50,8 @@ class Game extends Engine {
   @override
   void leaveFullscreen() {
     print('Leaving fullscreen');
-    renderer
-        .options(displaySize.x.toInt(), displaySize.y.toInt(), displayScale);
+    renderer.options(
+        displaySize.x.toInt(), displaySize.y.toInt(), displayScale);
   }
 
   Input get input => _input;
@@ -135,7 +152,7 @@ class Game extends Engine {
         _activeScene = TitleScene(this);
         break;
       case GameScene.GAME_SCENE_ACTION:
-        // this._activeScene = new ActionScene(this);
+        _activeScene = ActionScene(this);
         break;
     }
 

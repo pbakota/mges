@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import 'dart:html';
 
 import 'actor.dart';
@@ -51,7 +65,9 @@ class Hero extends Actor {
 
       if (velocity.x > 0) {
         velocity.x -= 3.0;
-      } else if (velocity.x < 0) velocity.x += 3.0;
+      } else if (velocity.x < 0) {
+        velocity.x += 3.0;
+      }
 
       if (velocity.x > -1.0 && velocity.x < 1.0) {
         velocity.x = 0;
@@ -86,8 +102,7 @@ class Hero extends Actor {
           // play fire-fx
           _fireFx.play();
 
-          final p = Vector2(
-              (flipped ? position.x : position.x + 20),
+          final p = Vector2((flipped ? position.x : position.x + 20),
               (_superSize ? position.y + 4 : position.y + 12));
 
           final v = Vector2(flipped ? -300 : 300, 0);
@@ -169,10 +184,8 @@ class HeroBullet extends Bullet {
   HeroBullet(Game game, bool flipped, Vector2 position, Vector2 velocity)
       : _flipped = flipped,
         _superSize = false,
-        super(
-            ImageSlice(game.getAsset<ImageElement>('bullet'), 0, 0, 16, 16),
-            position,
-            velocity);
+        super(ImageSlice(game.getAsset<ImageElement>('bullet'), 0, 0, 16, 16),
+            position, velocity);
 
   void supersize() => _superSize = true;
   bool get isSupersized => _superSize;
@@ -194,10 +207,8 @@ class HeroBullet extends Bullet {
   @override
   Rect get hitbox {
     return _superSize
-        ? Rect(_flipped ? position.x + 4 : position.x,
-            position.y + 12, 24, 12)
-        : Rect(_flipped ? position.x + 16 : position.x,
-            position.y + 6, 16, 6);
+        ? Rect(_flipped ? position.x + 4 : position.x, position.y + 12, 24, 12)
+        : Rect(_flipped ? position.x + 16 : position.x, position.y + 6, 16, 6);
   }
 
   @override
@@ -211,14 +222,13 @@ class HeroB extends Drawable {
   num _animTimer;
   int _animFrame;
 
-  HeroB(Game game, Vector2 position)
+  HeroB(Game game, Vector2 super.position)
       : _frames = [
           ImageSlice(game.getAsset<ImageElement>('hero1b'), 0, 0, 64, 64),
           ImageSlice(game.getAsset<ImageElement>('hero2b'), 0, 0, 64, 64),
         ],
         _animTimer = 0,
-        _animFrame = 0,
-        super(position);
+        _animFrame = 0;
 
   @override
   void update(double dt) {
