@@ -13,6 +13,18 @@ Porting from TypeScript to Dart was also straightforward.
 The game uses arrow keys for navigation and 'z' key for fire. The game itself is a basic shoot em up;
 To start the game in the browser, you have to make an interaction (make a click) in the browser itself. This is a requirement by the browsers.
 
+Title screen
+
+![](figures/2024-03-14_14-47.png)
+
+Game play
+
+![](figures/2024-03-14_14-49.png)
+
+Final score
+
+![](figures/2024-03-14_14-50.png)
+
 ## How to build
 
 The project used GNU make files to build targets. 
