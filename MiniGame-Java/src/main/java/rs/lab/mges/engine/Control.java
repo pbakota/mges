@@ -13,7 +13,7 @@ public final class Control {
     public static boolean Fire;
     public static boolean Exit;
 
-    public static void Reset() {
+    public static void reset() {
         Left = false;
         Right = false;
         Up = false;
@@ -22,7 +22,7 @@ public final class Control {
         Exit = false;
     }
 
-    public static void HandleEvent(SDL_Event evt) {
+    public static void handleEvent(SDL_Event evt) {
         switch (evt.type) {
             case SDL_EventType.SDL_KEYDOWN -> {
                 if (evt.key.keysym.sym == SDL_Keycode.SDLK_LEFT) {

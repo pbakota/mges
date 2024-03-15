@@ -100,11 +100,11 @@ public abstract class Game {
                         } else if (event.key.keysym.sym == SDLK_F12) {
                             quit = true;
                         } else {
-                            Control.HandleEvent(event);
+                            Control.handleEvent(event);
                         }
                     }
                     case SDL_EventType.SDL_KEYUP -> {
-                        Control.HandleEvent(event);
+                        Control.handleEvent(event);
                     }
                 }
             }

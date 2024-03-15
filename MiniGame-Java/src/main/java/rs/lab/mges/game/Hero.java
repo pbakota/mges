@@ -13,7 +13,7 @@ import rs.lab.mges.engine.Drawable;
 
 import static io.github.libsdl4j.api.sensor.SdlSensorConst.SDL_STANDARD_GRAVITY;
 
-public class Hero extends AnimatedSprite implements Actor {
+public class Hero extends AnimatedSprite {
 
     private final List<PlayerBullet> playerBullets = new ArrayList<>();
 
@@ -184,7 +184,7 @@ public class Hero extends AnimatedSprite implements Actor {
     /**
      * Player bullet
      */
-    public static class PlayerBullet extends Sprite implements Actor {
+    public static class PlayerBullet extends Sprite {
 
         public boolean active;
         public boolean supersized;
@@ -202,8 +202,8 @@ public class Hero extends AnimatedSprite implements Actor {
 
         @Override
         public void update(float dt) {
-            position.x += velocity.x;
-            position.y += velocity.y;
+            position.x += velocity.x * dt;
+            position.y += velocity.y * dt;
         }        
     }
 

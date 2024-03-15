@@ -138,7 +138,8 @@ public final class Text {
     }
 
     public static void drawText(SDL_Renderer renderer, int x, int y, SDL_Color color, SDL_Color shadow, String text, DrawTextOptions options) {
-        var surface = (SDL_Surface) SDLUtils.CheckSDLErrPointer(() -> SDL_CreateRGBSurface(0, text.length() * FONT_SIZE, FONT_SIZE, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff));
+        var surface = (SDL_Surface) SDLUtils.CheckSDLErrPointer(() -> SDL_CreateRGBSurface(0, text.length() * FONT_SIZE, FONT_SIZE, 32,
+                0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff));
 
         drawText(surface, text, SDLUtils.toRGBA(color), SDLUtils.toRGBA(shadow));
         var texture = SDL_CreateTextureFromSurface(renderer, surface);

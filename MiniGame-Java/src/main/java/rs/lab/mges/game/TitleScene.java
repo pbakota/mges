@@ -96,7 +96,7 @@ public class TitleScene extends Scene {
 
     @Override
     void enter() {
-        Control.Reset();
+        Control.reset();
     }
 
     private static class HeroB extends AnimatedSprite {
