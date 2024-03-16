@@ -101,8 +101,9 @@ public abstract class Mob extends AnimatedSprite {
         public MobFoxy(RabbitGame game, boolean flipped) {
             super(game.assets.foxyFrames, flipped, HP, SPEED, POINT);
             position.y = 280.0f;
-            hitbox.x = hitbox.h / 4;
-            hitbox.h = hitbox.h - hitbox.y;
+            hitbox.x = size.x / 4 - 8;
+            hitbox.y = size.y / 4;
+            hitbox.h -= hitbox.y;
         }
     }
 

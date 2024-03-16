@@ -146,16 +146,16 @@ public class GameOver {
         SDLUtils.CheckSDLErr(() -> SDL_SetTextureAlphaMod(game.assets.elements, (byte) 255));
         SDLUtils.CheckSDLErr(() -> SDL_RenderCopy(renderer, game.assets.elements, srcrect, dstrect));
 
-        Text.drawText(renderer, 170, 100, Colors.WhiteColor, Colors.DkGrayColor, String.format("Killed: %-4d", killed));
+        Text.drawText(renderer, 170, 100, Colors.WhiteColor, Colors.DkGrayColor, String.format("Killed: %04d", killed));
         Text.drawText(renderer, 400, 104, Colors.WhiteColor, Colors.DkGrayColor, String.format("x %d", KILLS_BONUS), DrawTextOptions.builder().setSize(0.5f));
 
-        Text.drawText(renderer, 170, 120, Colors.WhiteColor, Colors.DkGrayColor, String.format("Missed: %-4d", missed));
+        Text.drawText(renderer, 170, 120, Colors.WhiteColor, Colors.DkGrayColor, String.format("Missed: %04d", missed));
         Text.drawText(renderer, 400, 124, Colors.WhiteColor, Colors.DkGrayColor, String.format("x %d", MISSED_BONUS), DrawTextOptions.builder().setSize(0.5f));
 
-        Text.drawText(renderer, 170, 140, Colors.WhiteColor, Colors.DkGrayColor, String.format("Bombs : %-4d", bombsCollected));
+        Text.drawText(renderer, 170, 140, Colors.WhiteColor, Colors.DkGrayColor, String.format("Bombs : %04d", bombsCollected));
         Text.drawText(renderer, 400, 144, Colors.WhiteColor, Colors.DkGrayColor, String.format("x %d", MEDKIT_BONUS), DrawTextOptions.builder().setSize(0.5f));
 
-        Text.drawText(renderer, 170, 160, Colors.WhiteColor, Colors.DkGrayColor, String.format("Medkit: %-4d", medkitCollected));
+        Text.drawText(renderer, 170, 160, Colors.WhiteColor, Colors.DkGrayColor, String.format("Medkit: %04d", medkitCollected));
         Text.drawText(renderer, 400, 164, Colors.WhiteColor, Colors.DkGrayColor, String.format("x %d", BOMBS_BONUS), DrawTextOptions.builder().setSize(0.5f));
 
         Text.drawText(renderer, 140, 200, Colors.WhiteColor, Colors.BlackColor, String.format("FINAL SCORE: %08d", score));

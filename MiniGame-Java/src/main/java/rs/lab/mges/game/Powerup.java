@@ -32,21 +32,19 @@ public abstract class Powerup extends Sprite {
 
     @Override
     public void update(float dt) {
-        velocity.y += SDL_STANDARD_GRAVITY;
-        position.y += dt * velocity.y;
-
-        if (position.y > 280) {
+        if (position.y < 280) {
+            velocity.y += SDL_STANDARD_GRAVITY;
+            position.y += dt * velocity.y;
+        } else {
             position.y = 280f;
-
-            if (alpha < 10) {
-                alpha = 0;
-            } else {
-                alpha -= 10;
-            }
-
             waitTimer += dt;
-            if (waitTimer > 0.8f) {
-                active = false;
+            if (waitTimer > 3.0) {
+                if (alpha < 10) {
+                    alpha = 0;
+                    active = false;
+                } else {
+                    alpha -= 5;
+                }
             }
         }
     }
@@ -55,7 +53,7 @@ public abstract class Powerup extends Sprite {
         position = new Vector2f(x, 100.0f);
         velocity = new Vector2f(0.0f, 50.0f);
         waitTimer = 0.0f;
-        alpha = (byte) 255;
+        alpha = 255;
         active = true;
         oldPosition = null;
     }

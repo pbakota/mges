@@ -11,6 +11,8 @@ import rs.lab.mges.engine.SDLUtils.Vector2i;
 import static io.github.libsdl4j.api.rect.SdlRect.SDL_HasIntersection;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_SetTextureAlphaMod;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_RenderCopyEx;
+import static io.github.libsdl4j.api.render.SdlRender.SDL_RenderDrawRect;
+import static io.github.libsdl4j.api.render.SdlRender.SDL_SetRenderDrawColor;
 
 public interface Drawable {
 
@@ -26,7 +28,7 @@ public interface Drawable {
 
         protected SDL_Texture frame;
 
-        public byte alpha = (byte) 255;
+        public int alpha = 255;
         protected SDL_Rect hitbox;
 
         public Sprite(SDL_Texture frame, int w, int h) {
@@ -36,14 +38,14 @@ public interface Drawable {
             this.oldPosition = null;
             this.size = new Vector2i(w, h);
             this.flipped = false;
-            this.hitbox = SDLUtils.rect(position.x, position.y, size.x, size.y);
+            this.hitbox = SDLUtils.rect(0, 0, size.x, size.y);
         }
 
         public SDL_Rect getHitbox() {
-            return this.hitbox;
+            return SDLUtils.rect(position.x + hitbox.x, position.y + hitbox.y, hitbox.w, hitbox.h);
         }
 
-        public void draw(SDL_Renderer renderer, double delta) {
+        public void draw(SDL_Renderer renderer, float delta) {
             int x;
             int y;
             if (oldPosition != null) {
@@ -59,7 +61,7 @@ public interface Drawable {
             var flip = flipped ? SDL_RendererFlip.SDL_FLIP_HORIZONTAL : SDL_RendererFlip.SDL_FLIP_NONE;
 
             if (alpha < 255) {
-                SDLUtils.CheckSDLErr(() -> SDL_SetTextureAlphaMod(frame, alpha));
+                SDLUtils.CheckSDLErr(() -> SDL_SetTextureAlphaMod(frame, (byte) alpha));
             }
 
             SDLUtils.CheckSDLErr(() -> SDL_RenderCopyEx(renderer, frame, null, dst, 0.0f, (SDL_Point) null, flip));
@@ -71,19 +73,31 @@ public interface Drawable {
 
         public void update(float dt) {
         }
+        
+        /**
+         * Draw red rectangle around sprite's hit-box, can be used for debugging purpose
+         * @param renderer 
+         */
+        public void debug(SDL_Renderer renderer) {
+            SDLUtils.CheckSDLErr(() -> SDL_SetRenderDrawColor(renderer, (byte) 255, (byte) 0, (byte) 0, (byte) 255));
+            SDLUtils.CheckSDLErr(() -> SDL_RenderDrawRect(renderer, getHitbox()));
+        }
 
         // <editor-fold defaultstate="collapsed" desc="Builder">
+        @SuppressWarnings("unchecked")
         public <TSprite extends Sprite> TSprite setPosition(Vector2f position) {
             this.position = position;
             this.oldPosition = null;
             return (TSprite) this;
         }
 
+        @SuppressWarnings("unchecked")
         public <TSprite extends Sprite> TSprite setVelocity(Vector2f velocity) {
             this.velocity = velocity;
             return (TSprite) this;
         }
 
+        @SuppressWarnings("unchecked")
         public <TSprite extends Sprite> TSprite setFlipped(boolean flipped) {
             this.flipped = flipped;
             return (TSprite) this;
@@ -91,6 +105,14 @@ public interface Drawable {
         // </editor-fold>
     }
 
+    
+    public static boolean AABB(SDL_Rect rect1, SDL_Rect rect2) {
+        return SDL_HasIntersection(rect1, rect2);
+    }
+
+    /**
+     * Animated sprite
+     */
     public static abstract class AnimatedSprite extends Sprite {
 
         public int animFrame;
@@ -106,13 +128,10 @@ public interface Drawable {
         }
 
         @Override
-        public void draw(SDL_Renderer renderer, double delta) {
+        public void draw(SDL_Renderer renderer, float delta) {
             frame = frames[animFrame];
             super.draw(renderer, delta);
+            
         }
-    }
-
-    public static boolean AABB(SDL_Rect rect1, SDL_Rect rect2) {
-        return SDL_HasIntersection(rect1, rect2);
     }
 }

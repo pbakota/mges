@@ -27,6 +27,12 @@ import static io.github.libsdl4j.api.render.SdlRender.SDL_RenderCopyEx;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_RenderFillRect;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_SetRenderDrawBlendMode;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_SetRenderDrawColor;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rs.lab.mges.engine.Helpers;
 
 public class GameplayScene extends Scene {
 
@@ -69,9 +75,7 @@ public class GameplayScene extends Scene {
 
     @Override
     void enter() {
-//       if (File.Exists(_game.HiscoreFilePath))
-//            if (int.TryParse(File.ReadAllText(_game.HiscoreFilePath), out var hs))
-//                _hiscore = hs;
+        HiscoreHelper.readHiscore(game.HISCORE_FILEPATH, (hs) -> hiscore = hs);
 
         Control.reset();
 
@@ -98,8 +102,9 @@ public class GameplayScene extends Scene {
 
     @Override
     void leave() {
-//        if (_isGameOver)
-//            File.WriteAllText(_game.HiscoreFilePath, $"{_hiscore}");
+        if (isGameOver) {
+            HiscoreHelper.writeHiscore(game.HISCORE_FILEPATH, hiscore);
+        }
     }
 
     @Override
@@ -306,6 +311,7 @@ public class GameplayScene extends Scene {
             gameOver.draw(renderer, delta);
         } else {
             player.draw(renderer, delta);
+//            player.debug(renderer);
         }
 
         drawEntities(renderer, delta);
@@ -375,7 +381,7 @@ public class GameplayScene extends Scene {
         }
 
         @Override
-        public void draw(SDL_Renderer renderer, double delta) {
+        public void draw(SDL_Renderer renderer, float delta) {
             var src = SDLUtils.rect(animFrame * 16, 0, 16, 16);
             var dst = SDLUtils.rect(position.x, position.y, size.x, size.y);
 
@@ -390,7 +396,7 @@ public class GameplayScene extends Scene {
 
         public Dirt(RabbitGame game) {
             super(game.assets.bloodGround, 32, 32);
-            alpha = (byte) 255;
+            alpha = 255;
             active = true;
         }
 

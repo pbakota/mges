@@ -1,6 +1,7 @@
 package rs.lab.mges.game;
 
 import io.github.libsdl4j.api.render.SDL_Renderer;
+import java.nio.file.Path;
 import rs.lab.mges.engine.AssetsLoader;
 import rs.lab.mges.engine.Game;
 import rs.lab.mges.engine.Sound;
@@ -11,6 +12,8 @@ public class RabbitGame extends Game {
         TITLE,
         GAMEPLAY
     };
+    
+    public final Path HISCORE_FILEPATH = Path.of(System.getProperty("user.home"), "rabbit-unleashed-hiscore.txt");
 
     public GameAssets assets;
 
@@ -22,7 +25,7 @@ public class RabbitGame extends Game {
         super(640, 480, "Rabbit unleashed", 0);
 
         /* setup assets folder relative to the current folder */
-        AssetsLoader.setAssetsFolder("assets");
+        AssetsLoader.setAssetsFolder("assets");        
     }
 
     @Override

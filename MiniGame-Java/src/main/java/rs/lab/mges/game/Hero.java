@@ -28,10 +28,7 @@ public class Hero extends AnimatedSprite {
         this.game = game;
 
         position = new Vector2f(300f, 200f);
-        hitbox.x = size.x / 4;
-        hitbox.y = size.y / 4;
-        hitbox.w = size.x / 2;
-        hitbox.y = size.y / 2;
+        hitbox = SDLUtils.rect(size.x / 4, size.y / 4, size.x / 2, size.y / 2);
 
         bulletTimer = 0;
         supersizeTimer = 0;
@@ -176,7 +173,7 @@ public class Hero extends AnimatedSprite {
     }
 
     @Override
-    public void draw(SDL_Renderer renderer, double delta) {
+    public void draw(SDL_Renderer renderer, float delta) {
         super.draw(renderer, delta);
         playerBullets.forEach(b -> b.draw(renderer, delta));
     }
@@ -204,8 +201,6 @@ public class Hero extends AnimatedSprite {
         public void update(float dt) {
             position.x += velocity.x * dt;
             position.y += velocity.y * dt;
-        }        
+        }
     }
-
-    
 }

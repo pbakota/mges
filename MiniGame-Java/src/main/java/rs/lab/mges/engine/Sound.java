@@ -1,7 +1,6 @@
 package rs.lab.mges.engine;
 
 import com.sun.jna.Pointer;
-import com.sun.jna.PointerType;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import io.github.libsdl4j.api.audio.SDL_AudioDeviceID;
@@ -18,7 +17,9 @@ import static io.github.libsdl4j.api.audio.SdlAudioConst.SDL_MIX_MAXVOLUME;
 import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 import static io.github.libsdl4j.api.audio.SdlAudio.SDL_CloseAudioDevice;
 import static io.github.libsdl4j.api.audio.SdlAudio.SDL_FreeWAV;
+import static io.github.libsdl4j.api.audio.SdlAudio.SDL_LockAudioDevice;
 import static io.github.libsdl4j.api.audio.SdlAudio.SDL_PauseAudioDevice;
+import static io.github.libsdl4j.api.audio.SdlAudio.SDL_UnlockAudioDevice;
 import static io.github.libsdl4j.api.audio.SdlAudioConst.SDL_AUDIO_ALLOW_FORMAT_CHANGE;
 
 public class Sound {
@@ -204,6 +205,7 @@ public class Sound {
         if (device.audioEnabled) {
             pauseAudio();
 
+            SDL_LockAudioDevice(device.device);
             /* Close down audio */
             SDL_CloseAudioDevice(device.device);
         }
@@ -230,7 +232,7 @@ public class Sound {
     public static Audio createAudio(String filename, boolean loop, int volume) {
         Audio new_ = new Audio();
 
-        if (StringHelper.isNullOrEmpty(filename)) {
+        if (Helpers.isNullOrEmpty(filename)) {
             SDLUtils.LogInfo("Warning: filename empty");
             return null;
         }
@@ -288,7 +290,7 @@ public class Sound {
             }
         }
         /* Load from filename or from Memory */
-        if (!StringHelper.isNullOrEmpty(filename)) {
+        if (!Helpers.isNullOrEmpty(filename)) {
             /* Create new music sound with loop */
             var nnew_ = createAudio(filename, loop, volume);
             if (nnew_ == null) {
@@ -319,7 +321,7 @@ public class Sound {
 
         audios.add(new_);
 
-        SdlAudio.SDL_UnlockAudioDevice(device.device);
+        SDL_UnlockAudioDevice(device.device);
     }
 
 }

@@ -11,7 +11,7 @@ import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 
 public abstract class AssetsLoader {
 
-    public static final String CWD = Path.of("").toAbsolutePath().toString();
+    public static final String CWD = Helpers.getHere().toString();
     public static String assetsFolder;
 
     public static void setAssetsFolder(String sf) {
