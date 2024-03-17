@@ -1,0 +1,12 @@
+all: build
+.PHNONY: build run
+
+build:
+	go build
+
+run:
+	go run main.go
+
+fmt:
+	go fmt *.go
+
