@@ -151,7 +151,7 @@ public class Sound {
             SDLUtils.LogErr("Error: SDL_INIT_AUDIO not initialized");
             return;
         }
-        
+
         device.want = new SDL_AudioSpec();
         device.want.freq = AUDIO_FREQUENCY;
         device.want.format = new SDL_AudioFormat(AUDIO_FORMAT);
@@ -193,6 +193,7 @@ public class Sound {
                     audio.length = audio.lengthTrue;
                     audio.position = 0;
                 } else {
+                    audio.active = false;
                     if (soundCount > 0) {
                         soundCount--;
                     }
@@ -282,13 +283,10 @@ public class Sound {
         }
 
         /* If sound, check if under max number of sounds allowed, else don't play */
-        if (loop == false) {
-            if (soundCount >= AUDIO_MAX_SOUNDS) {
-                return;
-            } else {
-                soundCount++;
-            }
+        if (!loop && soundCount >= AUDIO_MAX_SOUNDS) {
+            return;
         }
+
         /* Load from filename or from Memory */
         if (!Helpers.isNullOrEmpty(filename)) {
             /* Create new music sound with loop */
@@ -319,9 +317,13 @@ public class Sound {
         /* Lock callback function */
         SdlAudio.SDL_LockAudioDevice(device.device);
 
+        audios.removeIf(p -> !p.active);
         audios.add(new_);
 
         SDL_UnlockAudioDevice(device.device);
-    }
 
+        if (!loop) {
+            soundCount++;
+        }
+    }
 }
