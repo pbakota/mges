@@ -2,9 +2,19 @@ package engine
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
+
+type Vector2f struct {
+	X, Y float64
+}
+
+type Vector2i struct {
+	X, Y int32
+}
 
 type IGame interface {
 	Init(renderer *sdl.Renderer)
@@ -25,23 +35,14 @@ type Game struct {
 	Text        *Text
 }
 
-func NewGame(w int32, h int32, windowTitle string, windowFlags int) *Game {
-	p := &Game{
-		Width:       w,
-		Height:      h,
-		WindowTitle: windowTitle,
-		WindowFlags: windowFlags,
-	}
-
-	return p
-}
-
 func (e *Game) Init(renderer *sdl.Renderer)                { e.Proxy.Init(renderer) }
 func (e *Game) Free()                                      { e.Proxy.Free() }
 func (e *Game) Update(dt float64)                          { e.Proxy.Update(dt) }
 func (e *Game) Draw(renderer *sdl.Renderer, delta float64) { e.Proxy.Draw(renderer, delta) }
 
 func (e *Game) Run() {
+	InitRandom()
+
 	perfrequency := sdl.GetPerformanceFrequency()
 	sdl.LogSetPriority(sdl.LOG_CATEGORY_APPLICATION, sdl.LOG_PRIORITY_VERBOSE)
 
@@ -65,8 +66,8 @@ func (e *Game) Run() {
 	}
 
 	e.Control = NewControl()
-	e.AssetLoader = NewLoader(e.Sound)
 	e.Sound = NewSound()
+	e.AssetLoader = NewLoader(e.Sound)
 	e.Text = NewText(e.AssetLoader)
 
 	e.Init(renderer)
@@ -128,4 +129,10 @@ func (e *Game) Run() {
 	e.Free()
 	renderer.Destroy()
 	window.Destroy()
+}
+
+var Rnd *rand.Rand
+
+func InitRandom() {
+	Rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 }

@@ -15,6 +15,15 @@ func NewControl() *Control {
 	return &Control{}
 }
 
+func (c *Control) Reset() {
+	c.Left = false
+	c.Right = false
+	c.Up = false
+	c.Down = false
+	c.Fire = false
+	c.Exit = false
+}
+
 func (c *Control) HandleEvent(evt *sdl.KeyboardEvent) {
 	switch evt.Type {
 	case sdl.KEYDOWN:

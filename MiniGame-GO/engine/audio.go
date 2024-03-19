@@ -4,7 +4,6 @@ package engine
 // void OnAudioPlayback(void *userdata, Uint8 *stream, int len);
 import "C"
 import (
-	"fmt"
 	"unsafe"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -75,7 +74,6 @@ func OnAudioPlayback(userdata unsafe.Pointer, stream *byte, length C.int) {
 			audio.Position += int(tmpLen)
 		} else if audio.Loop {
 			audio.Position = 0
-			fmt.Println("Loop")
 		} else {
 			audios = append(audios[:index], audios[index+1:]...)
 		}
@@ -117,6 +115,8 @@ func (s *Sound) EndSound() {
 		s.device.pauseAudio()
 		audioEnabled = false
 		sdl.LockAudioDevice(s.device.device)
+		// Wait to finish current audio frame
+		sdl.Delay(1000)
 		sdl.CloseAudioDevice(s.device.device)
 	}
 }
@@ -133,7 +133,7 @@ func NewAudio(buffer []byte, spec *sdl.AudioSpec, volume int, loop bool) *Audio 
 
 func (s *Sound) CreateAudio(filename string) *Audio {
 	if len(filename) == 0 {
-		LogWarn("Warning: filename empty")
+		LogErr("Warning: filename empty")
 		return nil
 	}
 

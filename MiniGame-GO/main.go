@@ -4,5 +4,5 @@ import "github.com/pbakota/mges/game"
 
 func main() {
 	g := game.NewRabbitGame(640, 480, "Rabbit unleashed")
-	g.Game.Run()
+	g.Run()
 }

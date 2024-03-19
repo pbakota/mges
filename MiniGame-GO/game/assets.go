@@ -22,7 +22,7 @@ type Assets struct {
 	Healthbar       *sdl.Texture
 	Elements        *sdl.Texture
 	Title           *sdl.Texture
-	MedKit          *sdl.Texture
+	Medkit          *sdl.Texture
 	Forest          *sdl.Texture
 	Bomb            *sdl.Texture
 	Music           *engine.Audio
@@ -85,7 +85,7 @@ func NewAssets(renderer *sdl.Renderer, loader *engine.Loader) *Assets {
 		BloodParticle:   loadFrame("blood.bmp"),
 		Explosion:       loadFrame("explosion-4.bmp"),
 		Healthbar:       loadFrame("healthbar.bmp"),
-		MedKit:          loadFrame("medkit.bmp"),
+		Medkit:          loadFrame("medkit.bmp"),
 		Bomb:            loadFrame("bombball.bmp"),
 		TickFx:          loadSound("tick.wav"),
 		ExplosionFx:     loadSound("explosion.wav"),
@@ -122,7 +122,7 @@ func (a *Assets) Free(loader *engine.Loader) {
 	defer loader.FreeBitmap(a.BloodParticle)
 	defer loader.FreeBitmap(a.Explosion)
 	defer loader.FreeBitmap(a.Healthbar)
-	defer loader.FreeBitmap(a.MedKit)
+	defer loader.FreeBitmap(a.Medkit)
 	defer loader.FreeBitmap(a.Bomb)
 	defer loader.FreeAudio(a.TickFx)
 	defer loader.FreeAudio(a.ExplosionFx)

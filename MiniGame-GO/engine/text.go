@@ -18,11 +18,53 @@ type Text struct {
 	fontData []byte
 }
 
+// NOTE: OMG, this approach with Self-referential functions to implement default values is so bad, but this is the "Go way" I presume,
+// since it was recommended by the author of Go: https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html
 type TextDrawOptions struct {
 	Size  float64
 	Angle float64
 	Vflip bool
 	Hflip bool
+}
+
+type Option func(f *TextDrawOptions)
+
+func WithSize(size float64) Option {
+	return func(f *TextDrawOptions) {
+		f.Size = size
+	}
+}
+
+func WithAngle(angle float64) Option {
+	return func(f *TextDrawOptions) {
+		f.Angle = angle
+	}
+}
+
+func WithVflip(flip bool) Option {
+	return func(f *TextDrawOptions) {
+		f.Vflip = flip
+	}
+}
+
+func WithHflip(flip bool) Option {
+	return func(f *TextDrawOptions) {
+		f.Hflip = flip
+	}
+}
+
+func NewTextDrawOptions(opts ...Option) *TextDrawOptions {
+	options := &TextDrawOptions{
+		Size:  1,
+		Angle: 0,
+		Vflip: false,
+		Hflip: false,
+	}
+	for _, applyOpt := range opts {
+		applyOpt(options)
+	}
+
+	return options
 }
 
 func NewText(loader *Loader) *Text {
@@ -60,15 +102,17 @@ func (t *Text) drawToCharBuffer(pixels []byte, col int, pitch int32, color uint3
 		for x := 0; x < FONT_SIZE; x++ {
 			switch t.fontData[offset] {
 			case COLOR_INDEX:
-				pixels[col+y*int(pitch)+x*4+0] = (byte)(color >> 24 & 0xff)
-				pixels[col+y*int(pitch)+x*4+1] = (byte)(color >> 16 & 0xff)
-				pixels[col+y*int(pitch)+x*4+2] = (byte)(color >> 8 & 0xff)
-				pixels[col+y*int(pitch)+x*4+3] = (byte)(color & 0xff)
+				// ARGB
+				pixels[col+y*int(pitch)+x*4+0] = (byte)(color & 0xff)
+				pixels[col+y*int(pitch)+x*4+1] = (byte)(color >> 8 & 0xff)
+				pixels[col+y*int(pitch)+x*4+2] = (byte)(color >> 16 & 0xff)
+				pixels[col+y*int(pitch)+x*4+3] = (byte)(color >> 24 & 0xff)
 			case SHADOW_INDEX:
-				pixels[col+y*int(pitch)+x*4+0] = (byte)(shadow >> 24 & 0xff)
-				pixels[col+y*int(pitch)+x*4+1] = (byte)(shadow >> 16 & 0xff)
-				pixels[col+y*int(pitch)+x*4+2] = (byte)(shadow >> 8 & 0xff)
-				pixels[col+y*int(pitch)+x*4+3] = (byte)(shadow & 0xff)
+				// ARGB
+				pixels[col+y*int(pitch)+x*4+0] = (byte)(shadow & 0xff)
+				pixels[col+y*int(pitch)+x*4+1] = (byte)(shadow >> 8 & 0xff)
+				pixels[col+y*int(pitch)+x*4+2] = (byte)(shadow >> 16 & 0xff)
+				pixels[col+y*int(pitch)+x*4+3] = (byte)(shadow >> 24 & 0xff)
 			case TRANSPARENT_INDEX:
 				// Do nothing here
 			}

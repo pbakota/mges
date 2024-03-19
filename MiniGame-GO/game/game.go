@@ -14,13 +14,18 @@ var (
 	DkGray2Color = &sdl.Color{R: 12, G: 17, B: 34, A: 255}
 )
 
+const (
+	GAME_SCENE_TITLE  = 0
+	GAME_SCENE_ACTION = 1
+)
+
 type RabbitGame struct {
-	*engine.Game
+	engine.Game
 	*Assets
 
-	TitleScene *TitleScene
-	// gameplayScene *GameplayScene
-	ActiveScene *Scene
+	TitleScene   *TitleScene
+	ActionScene  *ActionScene
+	CurrentScene IScene
 }
 
 func setAssetsFolder() {
@@ -36,12 +41,13 @@ func NewRabbitGame(w, h int32, title string) *RabbitGame {
 
 	setAssetsFolder()
 
-	g := &RabbitGame{
-		Game: engine.NewGame(w, h, title, 0),
-	}
+	g := &RabbitGame{}
 
-	g.TitleScene = NewTitleScene(g)
-	g.ActiveScene = &g.TitleScene.Scene
+	g.Width = w
+	g.Height = h
+	g.WindowTitle = title
+	g.WindowFlags = 0
+
 	g.Proxy = g
 	return g
 }
@@ -49,8 +55,12 @@ func NewRabbitGame(w, h int32, title string) *RabbitGame {
 func (g *RabbitGame) Init(renderer *sdl.Renderer) {
 	g.Assets = NewAssets(renderer, g.AssetLoader)
 
+	g.TitleScene = NewTitleScene(g)
+	g.ActionScene = NewActionScene(g)
+	g.CurrentScene = g.TitleScene
+
 	// Start background music
-	g.Sound.PlayAudio(g.Assets.Music, true)
+	// g.Sound.PlayAudio(g.Assets.Music, true)
 }
 
 func (g *RabbitGame) Free() {
@@ -58,9 +68,27 @@ func (g *RabbitGame) Free() {
 }
 
 func (g *RabbitGame) Update(dt float64) {
-	g.ActiveScene.Update(dt)
+	g.CurrentScene.Update(dt)
 }
 
 func (g *RabbitGame) Draw(renderer *sdl.Renderer, delta float64) {
-	g.ActiveScene.Draw(renderer, delta)
+	g.CurrentScene.Draw(renderer, delta)
+}
+
+func (g *RabbitGame) ChangeScene(scene int) {
+	var newScene IScene
+	switch scene {
+	case GAME_SCENE_TITLE:
+		newScene = g.TitleScene
+	case GAME_SCENE_ACTION:
+		newScene = g.ActionScene
+	}
+
+	if newScene == g.CurrentScene {
+		return
+	}
+
+	g.ActionScene.Leave()
+	g.CurrentScene = newScene
+	g.CurrentScene.Enter()
 }
