@@ -46,7 +46,7 @@ namespace MiniGameEngine
             public bool Active { get; set; }
         };
 
-        private static readonly ICollection<Audio> _audios = new List<Audio>();
+        private static readonly List<Audio> _audios = new();
         private static readonly PrivateAudioDevice _device = new();
         private static uint _soundCount = 0;
 
@@ -66,7 +66,7 @@ namespace MiniGameEngine
         {
             if ((SDL.SDL_WasInit(SDL.SDL_INIT_AUDIO) & SDL.SDL_INIT_AUDIO) == 0)
             {
-                Console.WriteLine("Error: SDL_INIT_AUDIO not initialized");
+                SDLUtil.LogErr("Error: SDL_INIT_AUDIO not initialized");
                 return;
             }
 
@@ -120,6 +120,7 @@ namespace MiniGameEngine
                     }
                     else
                     {
+                        audio.Active = false;
                         if (_soundCount > 0)
                             _soundCount--;
                     }
@@ -199,13 +200,8 @@ namespace MiniGameEngine
                 return;
 
             /* If sound, check if under max number of sounds allowed, else don't play */
-            if (loop == false)
-            {
-                if (_soundCount >= AUDIO_MAX_SOUNDS)
-                    return;
-                else
-                    _soundCount++;
-            }
+            if (!loop && _soundCount >= AUDIO_MAX_SOUNDS)
+                return;
 
             /* Load from filename or from Memory */
             if (!string.IsNullOrEmpty(filename))
@@ -240,9 +236,14 @@ namespace MiniGameEngine
             /* Lock callback function */
             SDL.SDL_LockAudioDevice(_device.device);
 
+            _audios.RemoveAll(s => !s.Active);
             _audios.Add(new_);
 
             SDL.SDL_UnlockAudioDevice(_device.device);
+
+            if(!loop) {
+                _soundCount++;
+            }
         }
     }
 }
