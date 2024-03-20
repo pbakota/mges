@@ -41,6 +41,8 @@ type RabbitGame struct {
 	ActionScene  *ActionScene
 	CurrentScene IScene
 	NewScene     IScene
+
+	HISCORE_FILEPATH string
 }
 
 func setAssetsFolder() {
@@ -57,6 +59,12 @@ func NewRabbitGame(w, h int32, title string) *RabbitGame {
 	setAssetsFolder()
 
 	g := &RabbitGame{}
+	dir, err := os.UserHomeDir()
+	if err == nil {
+		g.HISCORE_FILEPATH = dir + "/rabbit-unleashed-hiscore.txt"
+	} else {
+		g.HISCORE_FILEPATH = ""
+	}
 
 	g.Width = w
 	g.Height = h

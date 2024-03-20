@@ -59,6 +59,11 @@ func NewActionScene(game *RabbitGame) *ActionScene {
 
 func (a *ActionScene) Enter() {
 
+	a.hiscore = 10_000
+	readHiscore(a.g.HISCORE_FILEPATH, func(num int32) {
+		a.hiscore = num
+	})
+
 	a.healthbar = NewHealthbar(a.g)
 	a.player = NewHero(a.g)
 	a.gameOver = NewGameOver(a.g)
@@ -77,7 +82,6 @@ func (a *ActionScene) Enter() {
 	a.nextMob = 0
 	a.nextMobTimer = 0
 	a.score = 0
-	a.hiscore = 0
 	a.isGameOver = false
 	a.bombTimer = 0
 	a.medkitTimer = 0
@@ -91,6 +95,11 @@ func (a *ActionScene) Enter() {
 }
 
 func (a *ActionScene) Leave() {
+
+	if a.isGameOver {
+		writeHiscore(a.g.HISCORE_FILEPATH, a.hiscore)
+	}
+
 	a.g.Control.Reset()
 	a.mobs = nil
 	a.explosions = nil
