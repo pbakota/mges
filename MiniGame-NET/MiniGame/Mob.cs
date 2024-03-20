@@ -15,9 +15,11 @@
 using MiniGameEngine;
 using MiniGameEngine.Utils;
 
+namespace MiniGame;
+
 abstract class Mob : AnimatedSprite
 {
-    protected static Random _rand = new();
+    protected static readonly Random _rand = new();
     private bool _active = true;
     public bool Active { get => _active; set => _active = value; }
     private int _hp;
@@ -25,7 +27,7 @@ abstract class Mob : AnimatedSprite
     protected int _point;
     public int Point { get => _point; }
 
-    public Mob(IntPtr[] frames, bool flipped, int hp, double speed) : base(frames, 32,32)
+    protected Mob(IntPtr[] frames, bool flipped, int hp, double speed) : base(frames, 32,32)
     {
         _flipped = flipped;
         _speed = speed;

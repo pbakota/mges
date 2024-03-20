@@ -14,6 +14,8 @@
 
 using MiniGameEngine;
 
+namespace MiniGame;
+
 enum Scenes
 {
     TITLE,

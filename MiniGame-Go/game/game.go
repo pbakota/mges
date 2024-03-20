@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package game
 
 import (
@@ -26,6 +40,7 @@ type RabbitGame struct {
 	TitleScene   *TitleScene
 	ActionScene  *ActionScene
 	CurrentScene IScene
+	NewScene     IScene
 }
 
 func setAssetsFolder() {
@@ -58,9 +73,10 @@ func (g *RabbitGame) Init(renderer *sdl.Renderer) {
 	g.TitleScene = NewTitleScene(g)
 	g.ActionScene = NewActionScene(g)
 	g.CurrentScene = g.TitleScene
+	g.NewScene = g.TitleScene
 
 	// Start background music
-	// g.Sound.PlayAudio(g.Assets.Music, true)
+	g.Sound.PlayAudio(g.Assets.Music, true)
 }
 
 func (g *RabbitGame) Free() {
@@ -68,6 +84,14 @@ func (g *RabbitGame) Free() {
 }
 
 func (g *RabbitGame) Update(dt float64) {
+
+	if g.NewScene != nil && g.CurrentScene != g.NewScene {
+		g.CurrentScene.Leave()
+		g.CurrentScene = g.NewScene
+		g.CurrentScene.Enter()
+		g.NewScene = nil
+	}
+
 	g.CurrentScene.Update(dt)
 }
 
@@ -76,19 +100,10 @@ func (g *RabbitGame) Draw(renderer *sdl.Renderer, delta float64) {
 }
 
 func (g *RabbitGame) ChangeScene(scene int) {
-	var newScene IScene
 	switch scene {
 	case GAME_SCENE_TITLE:
-		newScene = g.TitleScene
+		g.NewScene = g.TitleScene
 	case GAME_SCENE_ACTION:
-		newScene = g.ActionScene
+		g.NewScene = g.ActionScene
 	}
-
-	if newScene == g.CurrentScene {
-		return
-	}
-
-	g.ActionScene.Leave()
-	g.CurrentScene = newScene
-	g.CurrentScene.Enter()
 }

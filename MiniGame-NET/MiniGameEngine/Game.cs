@@ -29,7 +29,7 @@ abstract public class Game
     private IntPtr _renderer;
     public IntPtr GameRenderer { get => _renderer; }
     protected readonly Random _rand = new();
-    public Game(int w, int h, string title = "MiniGame", SDL_WindowFlags windowFlags = 0)
+    protected Game(int w, int h, string title = "MiniGame", SDL_WindowFlags windowFlags = 0)
     {
         _w = w;
         _h = h;
@@ -39,7 +39,7 @@ abstract public class Game
     protected virtual void Init(IntPtr renderer) { }
     protected virtual void Free() { }
     protected virtual void Update(double dt) { }
-    protected virtual void Draw(IntPtr renderer, double interpAlpha) { }
+    protected virtual void Draw(IntPtr renderer, double alpha) { }
     public void Run()
     {
         var perfrequency = SDL_GetPerformanceFrequency();
@@ -103,7 +103,7 @@ abstract public class Game
                 deltaTimeAccumlator -= targetRate;
             }
 
-            GC.Collect();
+            // GC.Collect();
 
             SDL_SetWindowTitle(_window, $"{_windowTitle} - dt={deltaTime:N6}, fps={(int)(1.0f / deltaTime)}");
 

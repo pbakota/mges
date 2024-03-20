@@ -41,7 +41,7 @@ public final class Text {
         for (var c = 0; c < FONT_COUNT; ++c) {
             for (var y = 0; y < FONT_SIZE; ++y) {
                 for (var x = 0; x < FONT_SIZE; ++x) {
-                    fontData[dptr++] = pixels.getByte(FONT_SIZE * c + y * font.getPitch() + x);
+                    fontData[dptr++] = pixels.getByte(FONT_SIZE * c + y * font.getPitch() + (long)x);
                 }
             }
         }
@@ -58,9 +58,9 @@ public final class Text {
             for (var x = 0; x < FONT_SIZE; ++x) {
                 switch (fontData[offset++]) {
                     case COLOR_INDEX ->
-                        pixels.setInt(y * pitch + x * 4, color);
+                        pixels.setInt(y * pitch + (long)x * 4, color);
                     case SHADOW_INDEX ->
-                        pixels.setInt(y * pitch + x * 4, shadow);
+                        pixels.setInt(y * pitch + (long)x * 4, shadow);
                     case TRANSPARENT_INDEX -> {
                         // Do nothing here
                     }

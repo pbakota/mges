@@ -15,14 +15,15 @@
 using MiniGameEngine;
 using SDL2;
 
+namespace MiniGame;
+
 class GameAssets: AssetsLoader
 {
-    private static readonly string _cwd = Environment.CurrentDirectory;
-    public IntPtr[] PlayerFrames = Array.Empty<IntPtr>();
-    public IntPtr[] BeeFrames = Array.Empty<IntPtr>();
-    public IntPtr[] BlueFrames = Array.Empty<IntPtr>();
-    public IntPtr[] SnikyFrames = Array.Empty<IntPtr>();
-    public IntPtr[] FoxyFrames = Array.Empty<IntPtr>();
+    public IntPtr[] PlayerFrames;
+    public IntPtr[] BeeFrames;
+    public IntPtr[] BlueFrames;
+    public IntPtr[] SnikyFrames;
+    public IntPtr[] FoxyFrames;
     public IntPtr[] HeroBFrames;
     public IntPtr PlayerBullet;
     public IntPtr Ground;
@@ -102,6 +103,14 @@ class GameAssets: AssetsLoader
 
     public void FreeAll()
     {
+        Sound.FreeAudio(Music);
+        Sound.FreeAudio(TickFx);
+        Sound.FreeAudio(ExplosionFx);
+        Sound.FreeAudio(PickupFx);
+        Sound.FreeAudio(MobHitFx);
+        Sound.FreeAudio(FireFx);
+        Sound.FreeAudio(ExplosionLongFx);
+
         SDL.SDL_DestroyTexture(PlayerFrames[0]);
         SDL.SDL_DestroyTexture(PlayerFrames[1]);
         SDL.SDL_DestroyTexture(BeeFrames[0]);

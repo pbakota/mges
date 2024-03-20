@@ -31,3 +31,8 @@ publish:
 	dotnet publish /m:1 -f "net6.0" -c Release MiniGame -r win-x64 --output output/win-x64 --self-contained
 	tar zcf MiniGame.tgz -C output/win-x64 .
 
+sonarqube:
+	dotnet sonarscanner begin /k:"MiniGame-NET" /d:sonar.host.url="http://playbox:9000"  /d:sonar.login="sqp_6c5297a73fa2e518ce87c64163a3572ca858db38" /d:sonar.exclusions="SDL2-CS/**" && \
+	make && \
+	dotnet sonarscanner end /d:sonar.login="sqp_6c5297a73fa2e518ce87c64163a3572ca858db38"
+

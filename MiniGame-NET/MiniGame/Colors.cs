@@ -15,7 +15,9 @@
 
 using SDL2;
 
-class Colors
+namespace MiniGame;
+
+static class Colors
 {
     public static readonly SDL.SDL_Color WhiteColor = new() { r = 255, g = 255, b = 255, a = 255 };
     public static readonly SDL.SDL_Color BlackColor = new() { r = 0, g = 0, b = 0, a = 255 };

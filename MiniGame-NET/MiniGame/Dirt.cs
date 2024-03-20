@@ -15,6 +15,8 @@
 
 using MiniGameEngine;
 
+namespace MiniGame;
+
 class Dirt : Sprite
 {
     private double _alphaTimer = 0.0f;

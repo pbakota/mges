@@ -25,7 +25,7 @@ namespace MiniGameEngine
         private const ushort AUDIO_SAMPLES = 4096;
         private const int AUDIO_MAX_SOUNDS = 25;
 
-        private record PrivateAudioDevice
+        private sealed record PrivateAudioDevice
         {
             public uint device;
             public SDL.SDL_AudioSpec want;
@@ -152,10 +152,9 @@ namespace MiniGameEngine
         }
 
 
-        private static void FreeAudio(Audio audio)
+        public static void FreeAudio(Audio audio)
         {
-            if (audio.free)
-                SDL.SDL_FreeWAV(audio.bufferTrue);
+            SDL.SDL_FreeWAV(audio.bufferTrue);
         }
 
         private static Audio? CreateAudio(string? filename, bool loop, int volume)

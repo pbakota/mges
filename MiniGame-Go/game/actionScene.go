@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package game
 
 import (
@@ -40,25 +54,25 @@ func NewActionScene(game *RabbitGame) *ActionScene {
 	p := &ActionScene{
 		g: game,
 	}
-	p.healthbar = NewHealthbar(game)
-	p.player = NewHero(game)
-	p.gameOver = NewGameOver(game)
-	p.ready = NewGetReady(game)
-	p.bomb = NewBomb(game)
-	p.medkit = NewMedkit(game)
 	return p
 }
 
 func (a *ActionScene) Enter() {
-	a.g.Control.Reset()
 
-	clear(a.mobs)
-	clear(a.explosions)
-	clear(a.dirts)
+	a.healthbar = NewHealthbar(a.g)
+	a.player = NewHero(a.g)
+	a.gameOver = NewGameOver(a.g)
+	a.ready = NewGetReady(a.g)
+	a.bomb = NewBomb(a.g)
+	a.medkit = NewMedkit(a.g)
 
 	a.ready.Reset()
 	a.player.Reset()
 	a.gameOver.Reset()
+
+	a.mobs = make([]IMob, 0)
+	a.explosions = make([]*Explosion, 0)
+	a.dirts = make([]*Dirt, 0)
 
 	a.nextMob = 0
 	a.nextMobTimer = 0
@@ -77,6 +91,10 @@ func (a *ActionScene) Enter() {
 }
 
 func (a *ActionScene) Leave() {
+	a.g.Control.Reset()
+	a.mobs = nil
+	a.explosions = nil
+	a.dirts = nil
 }
 
 func (a *ActionScene) Draw(renderer *sdl.Renderer, delta float64) {
@@ -99,7 +117,7 @@ func (a *ActionScene) Draw(renderer *sdl.Renderer, delta float64) {
 		a.gameOver.Draw(renderer, delta)
 	} else {
 		a.player.Draw(renderer, delta)
-		// player.debug(renderer);
+		// a.player.Debug(renderer)
 	}
 
 	a.drawEntities(renderer, delta)
@@ -139,8 +157,8 @@ func (a *ActionScene) drawBackground(renderer *sdl.Renderer, delta float64) {
 }
 
 func (a *ActionScene) drawEntities(renderer *sdl.Renderer, delta float64) {
-	for e := len(a.dirts) - 1; e >= 0; e-- {
-		entity := a.dirts[e]
+	for e := len(a.mobs) - 1; e >= 0; e-- {
+		entity := a.mobs[e].GetMob()
 		if entity.Active {
 			entity.Draw(renderer, delta)
 		}
@@ -183,9 +201,9 @@ func (a *ActionScene) Update(dt float64) {
 
 	if !a.bomb.Active && !a.isGameOver {
 		a.bombSpawn(dt)
+	} else {
+		a.updateBomb(dt)
 	}
-
-	a.updateBomb(dt)
 
 	if a.ready.IsReady && !a.isGameOver {
 		a.mobSpawn(dt)
@@ -283,7 +301,7 @@ func (a *ActionScene) updateMobs(dt float64) {
 				a.missed++
 			}
 			if a.player.CheckBulletHit(mob) {
-				if mob.HitBy(a.player) {
+				if mob.HitByBullet(a.player) {
 					a.mobKilled(mob)
 				} else {
 					// Just hit

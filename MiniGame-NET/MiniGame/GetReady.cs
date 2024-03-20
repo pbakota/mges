@@ -15,6 +15,8 @@
 using MiniGameEngine.Utils;
 using SDL2;
 
+namespace MiniGame;
+
 class GetReady
 {
     private double _getreadyTimer = 0.0f;

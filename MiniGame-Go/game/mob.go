@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package game
 
 import (
@@ -36,7 +50,7 @@ func NewMob(frames []*sdl.Texture, flipped bool, hp int32, speed float64, point 
 		p.Position.X = 640.0
 		p.Velocity.X = -speed
 	} else {
-		p.Position.Y = -32.0
+		p.Position.X = -32.0
 		p.Velocity.X = speed
 	}
 
@@ -70,7 +84,7 @@ func (m *Mob) Update(dt float64) {
 	}
 }
 
-func (m *Mob) HitBy(player *Hero) bool {
+func (m *Mob) HitByBullet(player *Hero) bool {
 	m.HP--
 	if m.HP <= 0 {
 		return true

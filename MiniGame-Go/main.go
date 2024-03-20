@@ -12,24 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace MiniGame;
+package main
 
-interface IScene {
-    void Enter();
-    void Leave();
-    void Update(double dt);
-    void Draw(IntPtr renderer, double alpha);
-}
+import (
+	"github.com/pbakota/mges/game"
+)
 
-abstract class Scene: IScene
-{
-    protected RabbitGame _game;
-    protected Scene(RabbitGame game)
-    {
-        _game = game;
-    }
-    public virtual void Enter() { }
-    public virtual void Leave() { }
-    public abstract void Update(double dt);
-    public abstract void Draw(IntPtr renderer, double alpha);
+func main() {
+	g := game.NewRabbitGame(640, 480, "Rabbit unleashed")
+	g.Run()
 }

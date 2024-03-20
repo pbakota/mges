@@ -16,6 +16,8 @@ using MiniGameEngine;
 using MiniGameEngine.Utils;
 using SDL2;
 
+namespace MiniGame;
+
 class MedKit : Sprite
 {
     public readonly int Point = 500;

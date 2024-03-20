@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package engine
 
 // typedef unsigned char Uint8;
@@ -55,10 +69,6 @@ func (a *privateAudioDevice) unpauseAudio() {
 
 //export OnAudioPlayback
 func OnAudioPlayback(userdata unsafe.Pointer, stream *byte, length C.int) {
-	if !audioEnabled {
-		return
-	}
-
 	n := int(length)
 	buf := unsafe.Slice((*byte)(stream), n)
 	for i := 0; i < n; i++ {
@@ -75,6 +85,11 @@ func OnAudioPlayback(userdata unsafe.Pointer, stream *byte, length C.int) {
 		} else if audio.Loop {
 			audio.Position = 0
 		} else {
+			audio.Active = false
+			if soundCount > 0 {
+				soundCount--
+			}
+
 			audios = append(audios[:index], audios[index+1:]...)
 		}
 	}
@@ -115,8 +130,6 @@ func (s *Sound) EndSound() {
 		s.device.pauseAudio()
 		audioEnabled = false
 		sdl.LockAudioDevice(s.device.device)
-		// Wait to finish current audio frame
-		sdl.Delay(1000)
 		sdl.CloseAudioDevice(s.device.device)
 	}
 }

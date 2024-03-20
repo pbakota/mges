@@ -16,6 +16,8 @@ using MiniGameEngine;
 using MiniGameEngine.Utils;
 using SDL2;
 
+namespace MiniGame;
+
 class GameOver
 {
     private enum Scores
@@ -154,12 +156,10 @@ class GameOver
 
             if (_currentScoreCount == Scores.PRESS_FIRE)
             {
-                if (_gameOverTime > _pressFiretime)
-                    if (Control.Fire)
-                    {
-                        _game.ChangeScene(Scenes.TITLE);
-                        return;
-                    }
+                if (_gameOverTime > _pressFiretime && Control.Fire)
+                {
+                    _game.ChangeScene(Scenes.TITLE);
+                }
             }
         }
     }

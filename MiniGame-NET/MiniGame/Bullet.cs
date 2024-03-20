@@ -14,6 +14,8 @@
 
 using MiniGameEngine;
 
+namespace MiniGame;
+
 abstract class Bullet : Sprite
 {    
     protected Bullet(IntPtr frame, int w, int h) : base(frame, w, h)

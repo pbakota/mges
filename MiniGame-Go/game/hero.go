@@ -1,3 +1,17 @@
+// Copyright 2023 Peter Bakota
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package game
 
 import (
@@ -20,14 +34,8 @@ func NewHero(game *RabbitGame) *Hero {
 	p := &Hero{g: game,
 		AnimatedSprite: *engine.NewAnimatedSprite(game.Assets.PlayerFrames, 32, 32),
 	}
-	p.OnGround = false
-	p.BulletTimer = 0
-	p.SupersizeTimer = 0
-	p.Supersized = false
-	p.Position.X = 300.0
-	p.Position.Y = 200.0
 	p.Hitbox = sdl.Rect{X: p.Size.X / 4, Y: p.Size.Y / 4, W: p.Size.X / 2, H: p.Size.Y / 2}
-
+	p.Reset()
 	return p
 }
 
@@ -81,7 +89,7 @@ func (h *Hero) Update(dt float64) {
 		h.Flipped = true
 	}
 
-	if h.OnGround {
+	if !h.OnGround {
 		h.AnimFrame = 1
 	} else if h.Velocity.X == 0 {
 		h.AnimFrame = 0
@@ -198,6 +206,6 @@ func (h *Hero) CheckBulletHit(m *Mob) bool {
 }
 
 func (h *Hero) Draw(renderer *sdl.Renderer, delta float64) {
-	h.Sprite.Draw(renderer, delta)
+	h.AnimatedSprite.Draw(renderer, delta)
 	h.DrawActiveBullets(renderer, delta)
 }

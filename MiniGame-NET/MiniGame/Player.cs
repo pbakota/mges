@@ -16,6 +16,8 @@ using MiniGameEngine;
 using MiniGameEngine.Utils;
 using SDL2;
 
+namespace MiniGame;
+
 class Player : AnimatedSprite
 {
     private bool _onGround;

@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace MiniGame;
+package engine
 
-interface IScene {
-    void Enter();
-    void Leave();
-    void Update(double dt);
-    void Draw(IntPtr renderer, double alpha);
+import "github.com/veandco/go-sdl2/sdl"
+
+func LogInfo(str string, args ...interface{}) {
+	sdl.LogInfo(sdl.LOG_CATEGORY_APPLICATION, str, args)
 }
 
-abstract class Scene: IScene
-{
-    protected RabbitGame _game;
-    protected Scene(RabbitGame game)
-    {
-        _game = game;
-    }
-    public virtual void Enter() { }
-    public virtual void Leave() { }
-    public abstract void Update(double dt);
-    public abstract void Draw(IntPtr renderer, double alpha);
+func LogErr(str string, args ...interface{}) {
+	sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, str, args)
+}
+
+func LogWarn(str string, args ...interface{}) {
+	sdl.LogWarn(sdl.LOG_CATEGORY_APPLICATION, str, args)
 }
