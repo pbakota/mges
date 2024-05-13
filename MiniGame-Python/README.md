@@ -6,6 +6,12 @@
 python -m pip install pysdl2
 ```
 
+or
+
+```
+sudo apt install python3-sdl2
+```
+
 ## Run the game
 ```
 python3 main.py
