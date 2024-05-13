@@ -333,7 +333,6 @@ class Renderer {
     const aspect = this._canvas.width / this._canvas.height;
     const w = newHeight * aspect;
     const h = newHeight;
-    console.log(`w=${w}, h=${h}`);
     this._scale = scale;
     this._scaleWidth = w;
     this._scaleHeight = h;
