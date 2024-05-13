@@ -1,5 +1,7 @@
 from enum import Enum
 
+from game import RabbitGame
+
 __all__ = ['Scene', 'GameScene']
 
 
@@ -10,7 +12,7 @@ class GameScene(Enum):
 
 class Scene:
 
-    def __init__(self, game):
+    def __init__(self, game: RabbitGame):
         self._game = game
 
     # Virtual methods

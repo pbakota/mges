@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-from game import RabbitGame
+
+from game.RabbitGame import RabbitGame
 
 
 def main():

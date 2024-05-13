@@ -36,22 +36,22 @@ class Sprite:
 
     @property
     def flipped(self):
-        return self._flipper
+        return self._flipped
 
     @flipped.setter
     def flipped(self, val):
-        self._flipper = val
+        self._flipped = val
 
     @property
     def hitbox(self) -> SDL_Rect:
         return SDL_Rect(
                 int(self._position.x + self._hitbox.x),
                 int(self._position.y + self._hitbox.y),
-                self._hitbox.x,
-                self._hitbox.y
+                self._hitbox.w,
+                self._hitbox.h
         )
 
-    def draw(self, renderer, delta):
+    def draw(self, renderer:SDL_Renderer, delta:float):
         x = 0
         y = 0
         if self._oldPosition != None:
@@ -95,7 +95,7 @@ class AnimatedSprite(Sprite):
         self._animFrame = 0
         self._animTimer = 0
 
-    def draw(self, renderer, delta):
+    def draw(self, renderer:SDL_Renderer, delta:float):
         self._frame = self._frames[self._animFrame]
         super().draw(renderer, delta)
 

@@ -1,4 +1,5 @@
-from ctypes import *  # type: ignore
+from ctypes import *
+from typing import Any  # type: ignore
 from sdl2 import *  # type: ignore
 from . import SDLUtils
 
@@ -53,7 +54,7 @@ class Sound:
 
     # Factory method
     @staticmethod
-    def initAudio():
+    def initAudio() -> Any:
         if SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO == 0:
             SDLUtils.LogErr("Error: SDL_INIT_AUDIO not initialized")
             return None
@@ -129,10 +130,10 @@ class Sound:
                     if self._soundCount > 0:
                         self._soundCount -= 1
 
-    def playMusicFromMemory(self, audio, volume=SDL_MIX_MAXVOLUME):
+    def playMusicFromMemory(self, audio:Audio, volume=SDL_MIX_MAXVOLUME):
         self.playAudio(audio, volume, True)
 
-    def playSoundFromMemory(self, audio, volume=SDL_MIX_MAXVOLUME):
+    def playSoundFromMemory(self, audio:Audio, volume=SDL_MIX_MAXVOLUME):
         self.playAudio(audio, volume, False)
 
     def createAudio(self, filename) -> None | Audio:
@@ -181,7 +182,7 @@ class Sound:
         )
         SDL_LockAudioDevice(self._device.device)
         # Remove inactive audio samples
-        audios = [audio for audio in self._audios if audio.active]
+        audios = [audio for audio in self._audios if audio._active]
         # Append new audio
         self._audios.append(newAudio)
         SDL_UnlockAudioDevice(self._device.device)

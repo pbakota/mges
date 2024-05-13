@@ -1,6 +1,7 @@
 from engine import AssetLoader, Audio
 from sdl2 import * # type: ignore
 
+__all__ = ['Assets']
 
 class Assets:
     def __init__(self, renderer, sound):

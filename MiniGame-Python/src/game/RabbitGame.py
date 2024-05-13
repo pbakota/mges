@@ -5,7 +5,7 @@ from .Assets import Assets
 from .Scene import GameScene
 from game import Scene
 
-__all__ = ['RabbitGame', 'GameScene']
+__all__ = ['RabbitGame']
 
 
 class RabbitGame(Game):
@@ -17,7 +17,7 @@ class RabbitGame(Game):
         # Init text rendering
         Text.init()
         
-        self._sound = Sound.initAudio()
+        self._sound: Sound = Sound.initAudio()
         self.assets = Assets(renderer, self._sound)
         self._currentScene = TitleScene(self)
         self._sound.playMusicFromMemory(self.assets.music)  # type: ignore

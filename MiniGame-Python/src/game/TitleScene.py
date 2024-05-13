@@ -76,22 +76,22 @@ class TitleScene(Scene):
 
         # Mobs
         self._bee.draw(renderer, delta)
-        Text.drawText(renderer, 120, 150, Colors.WhiteColor, Colors.BlackColor, f"BEE  ......... {self._bee._points:3} points")
+        Text.drawText(renderer, 120, 150, Colors.WhiteColor, Colors.BlackColor, f"BEE .......... {self._bee._points:3} points")
 
         self._blue.draw(renderer, delta)
-        Text.drawText(renderer, 120, 190, Colors.WhiteColor, Colors.BlackColor, f"BLUE  ........ {self._blue._points:3} points")
+        Text.drawText(renderer, 120, 190, Colors.WhiteColor, Colors.BlackColor, f"BLUE ......... {self._blue._points:3} points")
 
         self._sniky.draw(renderer, delta)
         Text.drawText(renderer, 120, 230, Colors.WhiteColor, Colors.BlackColor, f"SNIKY ........ {self._sniky._points:3} points")
 
         self._foxy.draw(renderer, delta)
-        Text.drawText(renderer, 120, 270, Colors.WhiteColor, Colors.BlackColor, f"FOXY  ........ {self._foxy._points:3} points")
+        Text.drawText(renderer, 120, 270, Colors.WhiteColor, Colors.BlackColor, f"FOXY ......... {self._foxy._points:3} points")
 
         self._bomb.draw(renderer, delta)
-        Text.drawText(renderer, 120, 310, Colors.WhiteColor, Colors.BlackColor, f"BOMB  ........ {self._bomb._points:3} points")
+        Text.drawText(renderer, 120, 310, Colors.WhiteColor, Colors.BlackColor, f"BOMB ......... {self._bomb._points:3} points")
 
         self._medkit.draw(renderer, delta)
-        Text.drawText(renderer, 120, 350, Colors.WhiteColor, Colors.BlackColor, f"MEDKIT  ...... {self._medkit._points:3} points")
+        Text.drawText(renderer, 120, 350, Colors.WhiteColor, Colors.BlackColor, f"MEDKIT ....... {self._medkit._points:3} points")
 
 
         # Additional texts

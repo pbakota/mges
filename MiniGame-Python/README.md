@@ -6,15 +6,21 @@
 python -m pip install pysdl2
 ```
 
-or
+or after activating virtual env
 
 ```
-sudo apt install python3-sdl2
+bin/python3 -m pip install -r requirements.txt
 ```
 
 ## Run the game
+
 ```
-python3 main.py
+cd src && python3 main.py
+```
+
+or from venv
+```
+. bin/activate && cd src && ../bin/python3 main.py
 ```
 
 
@@ -24,11 +30,6 @@ python3 main.py
 
 ```
 VSCode
-```
-
-### For replace import * with names
-```
-pip install dewildcard
 ```
 
 ### For formating

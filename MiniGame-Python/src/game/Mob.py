@@ -45,6 +45,8 @@ class Mob(AnimatedSprite):
     def gotHit(self, hero):
         if self._hp <= 0:
             return True
+        
+        self._hp -= 1
 
         if hero.flipped:
             self._velocity.x = -self._speed * 1.2
@@ -57,13 +59,13 @@ class Mob(AnimatedSprite):
 class MobBee(Mob):
     def __init__(self, game, flipped):
         super().__init__(game.assets.beeFrames, flipped, hp=2, speed=40, points=20)
-        self._position.y = 280.0 - 32 * random() * 32.0
+        self._position.y = 280.0 - 32 + random() * 32.0
 
 
 class MobBlue(Mob):
     def __init__(self, game, flipped):
         super().__init__(game.assets.blueFrames, flipped, hp=3, speed=60, points=50)
-        self._position.y = 280.0 - 32 * random() * 32.0
+        self._position.y = 280.0 - 32 + random() * 32.0
 
 
 class MobFoxy(Mob):

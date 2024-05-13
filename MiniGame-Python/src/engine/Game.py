@@ -82,7 +82,7 @@ class Game:
             # title_bytes = utf8(value).encode('utf-8')
             SDL_SetWindowTitle(
                 window, f"{self._title} - dt={deltaTime:.6f}, fps={int(1/deltaTime)}".encode('utf8'))
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF)
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255)
             SDL_RenderClear(renderer)
 
             self.draw(renderer, deltaAccumlator/targetRate)
