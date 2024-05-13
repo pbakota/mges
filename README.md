@@ -1,6 +1,6 @@
 # Mini game engine suite (MGES)
 
-Mini game engine suite is an attempt to re-create the same minigame in different platforms and languages. Currently, the game is implemented in .NET, TypeScript and Dart, Java, Go, but Rust, Scala, Pascal, F#, NodeJS is coming also.
+Mini game engine suite is an attempt to re-create the same minigame in different platforms and languages. Currently, the game is implemented in .NET, TypeScript and Dart, Java, Go, Python3 but Rust, Scala, Pascal, F#, NodeJS is coming also.
 
 The project is started to be an experiment to check .NET SDL2 bindings capabilities, and it turned out very successfully. So, I continued to port the game to other environments.
 
@@ -11,6 +11,8 @@ Porting from TypeScript to Dart was also straightforward.
 Java port was easy
 
 Struggled a bit with Go port
+
+The Python port was easy; however, I had to change the way how I render the text. In previous versions, I used pixel-by-pixel rendering, and that was ok for other languages, but not for Python. For Python, it was too slow, so I had to change that part. Now instead of rendering slow pixel-by-pixel, I manipulate the original surface for font preparing all color setup and then render the character glyphs by copying from the prepared surface to another surface, and this is much faster than the previous solution. Maybe I will back port this for other languages as well.
 
 ## How to play
 
