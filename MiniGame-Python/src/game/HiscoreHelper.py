@@ -10,7 +10,7 @@ def readHiscore() -> int:
         with open(HISCORE_PATH, 'r') as f:
             line = f.readline()
             return int(line)
-    except OSError|ValueError:
+    except:
         return -1
 
 def writeHiscore(hiscore:int):
