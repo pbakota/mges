@@ -102,6 +102,8 @@ Then the final packaged version can be found in `public` folder.
 
 ---
 
+Music credits: Music is from the Amiga version of the game called `Ruff 'n' Tumble` and created by Jason Page
+
 Libraries/tools/assets:
 
 - https://www.libsdl.org/
